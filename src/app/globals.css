@@ -1,0 +1,348 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius: 0.625rem;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  /* Minimal color palette */
+  --primary: #EC7446; /* Terracotta Flame */
+  --primary-foreground: #FDFBF7; /* Warm Ivory */
+  
+  --secondary: #1E2A38; /* Midnight Steel */
+  --secondary-foreground: #FDFBF7; /* Warm Ivory */
+  
+  /* Neutral backgrounds and text */
+  --background: #FDFBF7; /* Warm Ivory */
+  --foreground: #1E2A38; /* Midnight Steel */
+  
+  /* Card */
+  --card: #FFFFFF;
+  --card-foreground: #1E2A38; /* Midnight Steel */
+  
+  /* Popover */
+  --popover: #FFFFFF;
+  --popover-foreground: #1E2A38; /* Midnight Steel */
+  
+  /* Muted colors (subtle variations of primary/secondary) */
+  --muted: #F5F0E9; /* Lighter version of Warm Ivory */
+  --muted-foreground: #4A5568; /* Grayish version of Midnight Steel */
+  
+  /* Accent (using primary with slight variation) */
+  --accent: #F9A87C; /* Lighter, more subtle version of Terracotta Flame */
+  --accent-foreground: #1E2A38; /* Midnight Steel */
+  
+  /* Destructive (using a reddish tone from primary) */
+  --destructive: #D45C38; /* Darker, redder version of Terracotta Flame */
+  
+  /* Border and input */
+  --border: #E5E7EB; /* Very light gray */
+  --input: #E5E7EB; /* Very light gray */
+  --ring: #EC7446; /* Terracotta Flame */
+  
+  /* Charts (variations of primary) */
+  --chart-1: #EC7446; /* Terracotta Flame */
+  --chart-2: #F9A87C; /* Lighter Terracotta */
+  --chart-3: #1E2A38; /* Midnight Steel */
+  --chart-4: #F5F0E9; /* Light background */
+  --chart-5: #4A5568; /* Muted text color */
+  
+  /* Sidebar */
+  --sidebar: #FDFBF7; /* Warm Ivory */
+  --sidebar-foreground: #1E2A38; /* Midnight Steel */
+  --sidebar-primary: #EC7446; /* Terracotta Flame */
+  --sidebar-primary-foreground: #FDFBF7; /* Warm Ivory */
+  --sidebar-accent: #F5F0E9; /* Light background */
+  --sidebar-accent-foreground: #1E2A38; /* Midnight Steel */
+  --sidebar-border: #E5E7EB; /* Light gray */
+  --sidebar-ring: #EC7446; /* Terracotta Flame */
+}
+
+.dark {
+  /* Dark mode - reversed and adjusted colors */
+  --background: #1E2A38; /* Midnight Steel */
+  --foreground: #FDFBF7; /* Warm Ivory */
+  
+  --card: #2A3849; /* Slightly lighter than Midnight Steel */
+  --card-foreground: #FDFBF7; /* Warm Ivory */
+  
+  --popover: #2A3849;
+  --popover-foreground: #FDFBF7;
+  
+  --primary: #EC7446; /* Terracotta Flame (same as light mode) */
+  --primary-foreground: #FDFBF7; /* Warm Ivory */
+  
+  --secondary: #3A4A5C; /* Lighter version of Midnight Steel */
+  --secondary-foreground: #FDFBF7; /* Warm Ivory */
+  
+  --muted: #2A3849; /* Card background color */
+  --muted-foreground: #A0AEC0; /* Light gray for muted text */
+  
+  --accent: #3A4A5C; /* Secondary color */
+  --accent-foreground: #FDFBF7; /* Warm Ivory */
+  
+  --destructive: #D45C38; /* Same as light mode */
+  
+  --border: #3A4A5C; /* Secondary color */
+  --input: #3A4A5C; /* Secondary color */
+  --ring: #EC7446; /* Terracotta Flame */
+  
+  /* Charts for dark mode */
+  --chart-1: #EC7446; /* Terracotta Flame */
+  --chart-2: #F9A87C; /* Lighter Terracotta */
+  --chart-3: #A0AEC0; /* Muted foreground */
+  --chart-4: #3A4A5C; /* Secondary */
+  --chart-5: #2A3849; /* Card */
+  
+  /* Sidebar for dark mode */
+  --sidebar: #1E2A38; /* Midnight Steel */
+  --sidebar-foreground: #FDFBF7; /* Warm Ivory */
+  --sidebar-primary: #EC7446; /* Terracotta Flame */
+  --sidebar-primary-foreground: #FDFBF7; /* Warm Ivory */
+  --sidebar-accent: #2A3849; /* Card background */
+  --sidebar-accent-foreground: #FDFBF7; /* Warm Ivory */
+  --sidebar-border: #3A4A5C; /* Secondary color */
+  --sidebar-ring: #EC7446; /* Terracotta Flame */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Add to your global CSS or create a PDF-specific stylesheet */
+@media print {
+  .print-hidden {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .bg-muted\/30 {
+    background-color: #f8f9fa !important;
+  }
+
+  .border-border {
+    border-color: #e5e7eb !important;
+  }
+}
+
+/* PDF-specific styles */
+.pdf-optimized {
+  font-family: "Arial", "Helvetica", sans-serif !important;
+  line-height: 1.4 !important;
+}
+
+.pdf-optimized .text-sm {
+  font-size: 11px !important;
+}
+
+.pdf-optimized .text-lg {
+  font-size: 14px !important;
+}
+
+.pdf-optimized .text-2xl {
+  font-size: 18px !important;
+}
+
+/* ------------------------------------------------------------- */
+/* landing page  */
+/* ------------------------------------------------------------- */
+/* Animations for popups */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-progress {
+  animation: progress 5s linear forwards;
+}
+
+/* Custom scrollbar */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Glass effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Shimmer effect */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Pulse animation */
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

@@ -1,0 +1,191 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius: 0.625rem;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  /* Core brand colors from Houspire palette */
+  --primary: #EC7446; /* Terracotta Flame */
+  --primary-foreground: #FDFBF7; /* Warm Ivory */
+  
+  --secondary: #2C5A52; /* Forest Teal */
+  --secondary-foreground: #FDFBF7; /* Warm Ivory */
+  
+  --accent: #FFCF69; /* Sun Amber */
+  --accent-foreground: #1E2A38; /* Midnight Steel */
+  
+  --destructive: #734443; /* Mahogany Plum */
+  
+  /* Background and foreground */
+  --background: #FDFBF7; /* Warm Ivory */
+  --foreground: #1E2A38; /* Midnight Steel */
+  
+  /* Card */
+  --card: #FFFFFF;
+  --card-foreground: #1E2A38; /* Midnight Steel */
+  
+  /* Popover */
+  --popover: #FFFFFF;
+  --popover-foreground: #1E2A38; /* Midnight Steel */
+  
+  /* Muted */
+  --muted: #E2DACF; /* Soft Taupe */
+  --muted-foreground: #3D6E70; /* Sage Blue-Green */
+  
+  /* Border and input */
+  --border: #BB9480; /* Mocha Beige */
+  --input: #BB9480; /* Mocha Beige */
+  --ring: #EC7446; /* Terracotta Flame */
+  
+  /* Chart colors */
+  --chart-1: #EC7446; /* Terracotta Flame */
+  --chart-2: #2C5A52; /* Forest Teal */
+  --chart-3: #385183; /* Royal Slate Blue */
+  --chart-4: #FFCF69; /* Sun Amber */
+  --chart-5: #8CBC9D; /* Mint Verdure */
+  
+  /* Sidebar */
+  --sidebar: #FDFBF7; /* Warm Ivory */
+  --sidebar-foreground: #1E2A38; /* Midnight Steel */
+  --sidebar-primary: #EC7446; /* Terracotta Flame */
+  --sidebar-primary-foreground: #FDFBF7; /* Warm Ivory */
+  --sidebar-accent: #E2DACF; /* Soft Taupe */
+  --sidebar-accent-foreground: #1E2A38; /* Midnight Steel */
+  --sidebar-border: #BB9480; /* Mocha Beige */
+  --sidebar-ring: #EC7446; /* Terracotta Flame */
+}
+
+.dark {
+  /* Dark mode using Houspire palette */
+  --background: #1E2A38; /* Midnight Steel */
+  --foreground: #FDFBF7; /* Warm Ivory */
+  
+  --card: #2C3E50; /* Darker shade of Midnight Steel */
+  --card-foreground: #FDFBF7; /* Warm Ivory */
+  
+  --popover: #2C3E50;
+  --popover-foreground: #FDFBF7;
+  
+  --primary: #EC7446; /* Terracotta Flame */
+  --primary-foreground: #FDFBF7; /* Warm Ivory */
+  
+  --secondary: #3D6E70; /* Sage Blue-Green */
+  --secondary-foreground: #FDFBF7; /* Warm Ivory */
+  
+  --muted: #2C5A52; /* Forest Teal */
+  --muted-foreground: #90AAAA; /* Urban Mist Grey */
+  
+  --accent: #FFCF69; /* Sun Amber */
+  --accent-foreground: #1E2A38; /* Midnight Steel */
+  
+  --destructive: #734443; /* Mahogany Plum */
+  
+  --border: #385183; /* Royal Slate Blue */
+  --input: #385183; /* Royal Slate Blue */
+  --ring: #EC7446; /* Terracotta Flame */
+  
+  /* Chart colors for dark mode */
+  --chart-1: #EC7446; /* Terracotta Flame */
+  --chart-2: #8CBC9D; /* Mint Verdure */
+  --chart-3: #FFCF69; /* Sun Amber */
+  --chart-4: #90AAAA; /* Urban Mist Grey */
+  --chart-5: #BB9480; /* Mocha Beige */
+  
+  /* Sidebar for dark mode */
+  --sidebar: #1E2A38; /* Midnight Steel */
+  --sidebar-foreground: #FDFBF7; /* Warm Ivory */
+  --sidebar-primary: #EC7446; /* Terracotta Flame */
+  --sidebar-primary-foreground: #FDFBF7; /* Warm Ivory */
+  --sidebar-accent: #2C5A52; /* Forest Teal */
+  --sidebar-accent-foreground: #FDFBF7; /* Warm Ivory */
+  --sidebar-border: #385183; /* Royal Slate Blue */
+  --sidebar-ring: #EC7446; /* Terracotta Flame */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Add to your global CSS or create a PDF-specific stylesheet */
+@media print {
+  .print-hidden {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .bg-muted\/30 {
+    background-color: #f8f9fa !important;
+  }
+
+  .border-border {
+    border-color: #e5e7eb !important;
+  }
+}
+
+/* PDF-specific styles */
+.pdf-optimized {
+  font-family: "Arial", "Helvetica", sans-serif !important;
+  line-height: 1.4 !important;
+}
+
+.pdf-optimized .text-sm {
+  font-size: 11px !important;
+}
+
+.pdf-optimized .text-lg {
+  font-size: 14px !important;
+}
+
+.pdf-optimized .text-2xl {
+  font-size: 18px !important;
+}

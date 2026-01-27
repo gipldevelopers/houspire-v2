@@ -1,0 +1,317 @@
+/* LP3 Orange Theme - Unique CSS Variables */
+.lp3-landing {
+  /* Unique LP3 CSS variables */
+  --lp3-background: 0 0% 100%;
+  --lp3-foreground: 220 15% 10%;
+  --lp3-card: 0 0% 100%;
+  --lp3-card-foreground: 220 15% 10%;
+  --lp3-popover: 0 0% 100%;
+  --lp3-popover-foreground: 220 15% 10%;
+  --lp3-primary: 24 85% 60%;
+  --lp3-primary-foreground: 0 0% 98%;
+  --lp3-primary-glow: 24 85% 70%;
+  --lp3-secondary: 210 40% 96%;
+  --lp3-secondary-foreground: 220 15% 10%;
+  --lp3-muted: 210 40% 96%;
+  --lp3-muted-foreground: 220 10% 40%;
+  --lp3-accent: 24 85% 60%;
+  --lp3-accent-foreground: 0 0% 98%;
+  --lp3-destructive: 0 72% 51%;
+  --lp3-destructive-foreground: 0 0% 98%;
+  --lp3-border: 220 13% 91%;
+  --lp3-input: 220 13% 91%;
+  --lp3-ring: 24 85% 60%;
+  --lp3-radius: 0.75rem;
+  --lp3-success: 142 76% 36%;
+  --lp3-success-foreground: 0 0% 98%;
+  
+  /* Custom gradients and glows */
+  --lp3-gradient-hero: linear-gradient(135deg, hsl(24 85% 98%) 0%, hsl(210 40% 98%) 50%, hsl(270 50% 98%) 100%);
+  --lp3-gradient-accent: linear-gradient(135deg, hsl(24 85% 60%) 0%, hsl(20 90% 55%) 100%);
+  --lp3-gradient-mesh: radial-gradient(at 0% 0%, hsl(24 85% 95%) 0px, transparent 50%), radial-gradient(at 100% 0%, hsl(210 40% 95%) 0px, transparent 50%), radial-gradient(at 100% 100%, hsl(270 50% 95%) 0px, transparent 50%);
+  --lp3-glow-accent: 0 10px 40px hsl(24 85% 60% / 0.3);
+  --lp3-glow-primary: 0 0 60px hsl(24 85% 60% / 0.4);
+}
+
+/* Fixed dark mode selector */
+.dark .lp3-landing {
+  --lp3-background: 220 15% 8%;
+  --lp3-foreground: 0 0% 98%;
+  --lp3-card: 220 13% 12%;
+  --lp3-card-foreground: 0 0% 98%;
+  --lp3-popover: 220 13% 12%;
+  --lp3-popover-foreground: 0 0% 98%;
+  --lp3-primary: 24 85% 60%;
+  --lp3-primary-foreground: 0 0% 98%;
+  --lp3-primary-glow: 24 85% 70%;
+  --lp3-secondary: 220 13% 16%;
+  --lp3-secondary-foreground: 0 0% 98%;
+  --lp3-muted: 220 13% 20%;
+  --lp3-muted-foreground: 0 0% 65%;
+  --lp3-accent: 24 85% 60%;
+  --lp3-accent-foreground: 0 0% 98%;
+  --lp3-destructive: 0 72% 55%;
+  --lp3-destructive-foreground: 0 0% 98%;
+  --lp3-border: 220 13% 20%;
+  --lp3-input: 220 13% 16%;
+  --lp3-ring: 24 85% 60%;
+  
+  /* Dark mode gradients */
+  --lp3-gradient-hero: linear-gradient(135deg, hsl(220 15% 8%) 0%, hsl(220 13% 12%) 50%, hsl(270 20% 10%) 100%);
+  --lp3-gradient-accent: linear-gradient(135deg, hsl(24 85% 60%) 0%, hsl(20 90% 55%) 100%);
+  --lp3-gradient-mesh: radial-gradient(at 0% 0%, hsl(24 85% 20%) 0px, transparent 50%), radial-gradient(at 100% 0%, hsl(210 40% 15%) 0px, transparent 50%), radial-gradient(at 100% 100%, hsl(270 50% 15%) 0px, transparent 50%);
+  --lp3-glow-accent: 0 10px 40px hsl(24 85% 60% / 0.5);
+  --lp3-glow-primary: 0 0 60px hsl(24 85% 60% / 0.6);
+}
+
+/* Apply the theme to all LP3 components */
+.lp3-landing {
+  background: hsl(var(--lp3-background));
+  color: hsl(var(--lp3-foreground));
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.lp3-landing h1,
+.lp3-landing h2, 
+.lp3-landing h3,
+.lp3-landing h4,
+.lp3-landing h5,
+.lp3-landing h6 {
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+}
+
+.lp3-landing * {
+  border-color: hsl(var(--lp3-border));
+}
+
+.lp3-landing body {
+  background: hsl(var(--lp3-background));
+  color: hsl(var(--lp3-foreground));
+}
+
+.lp3-landing html {
+  scroll-behavior: smooth;
+}
+
+/* Container max-width for LP3 */
+.lp3-landing .container {
+  max-width: 1400px;
+}
+
+/* Ensure proper spacing for one-fold layout */
+.lp3-landing .min-h-screen {
+  min-height: 100vh;
+}
+
+/* Responsive adjustments */
+@media (max-height: 800px) {
+  .lp3-landing .min-h-screen {
+    min-height: 800px;
+  }
+}
+
+/* Brands Section Animations */
+.lp3-landing .brand-logo {
+  animation: brandPulse 7s ease-in-out infinite;
+}
+
+@keyframes brandPulse {
+  0%, 100% { 
+    filter: grayscale(0.3);
+    opacity: 0.9;
+  }
+  14.28%, 85.72% { 
+    filter: grayscale(0.3);
+    opacity: 0.9;
+  }
+  50% { 
+    filter: grayscale(0);
+    opacity: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .lp3-landing .brand-logo {
+    animation: brandPulseDesktop 7s ease-in-out infinite;
+  }
+  
+  @keyframes brandPulseDesktop {
+    0%, 100% { 
+      filter: grayscale(1);
+      opacity: 0.7;
+    }
+    14.28%, 85.72% { 
+      filter: grayscale(1);
+      opacity: 0.7;
+    }
+    50% { 
+      filter: grayscale(0);
+      opacity: 1;
+    }
+  }
+}
+
+/* LP3-specific utility classes with unique variables */
+.lp3-landing .lp3-text-gradient {
+  background: linear-gradient(135deg, hsl(var(--lp3-primary)) 0%, hsl(var(--lp3-primary-glow)) 50%, hsl(var(--lp3-accent)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.lp3-landing .lp3-glass-card {
+  backdrop-filter: blur(16px);
+  background: hsl(var(--lp3-card) / 0.4);
+  border: 1px solid hsl(var(--lp3-border) / 0.5);
+}
+
+.lp3-landing .lp3-hover-lift {
+  transition: all 0.3s ease;
+}
+
+.lp3-landing .lp3-hover-lift:hover {
+  transform: scale(1.05) translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.lp3-landing .lp3-hover-glow {
+  transition: all 0.3s ease;
+}
+
+.lp3-landing .lp3-hover-glow:hover {
+  box-shadow: var(--lp3-glow-accent);
+}
+
+.lp3-landing .lp3-card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.lp3-landing .lp3-card-3d:hover {
+  transform: perspective(1000px) rotateY(5deg) rotateX(5deg);
+}
+
+.lp3-landing .lp3-writing-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Animation classes */
+.lp3-landing .lp3-animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.lp3-landing .lp3-animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.lp3-landing .lp3-animate-shimmer {
+  animation: shimmer 2s linear infinite;
+}
+
+.lp3-landing .lp3-animate-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+.lp3-landing .lp3-animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.lp3-landing .lp3-animate-scale-in {
+  animation: scaleIn 0.5s ease-out;
+}
+
+.lp3-landing .lp3-animate-gradient-x {
+  animation: gradient-x 3s ease infinite;
+  background-size: 200% auto;
+}
+
+.lp3-landing .lp3-animate-pulse-strong {
+  animation: pulse-strong 2s ease-in-out infinite;
+}
+
+/* Keyframes for animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--lp3-primary) / 0.3); }
+  50% { box-shadow: var(--lp3-glow-accent); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes pulse-strong {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+/* LP3-specific color utilities */
+.lp3-landing .lp3-bg-primary {
+  background-color: hsl(var(--lp3-primary));
+}
+
+.lp3-landing .lp3-text-primary {
+  color: hsl(var(--lp3-primary));
+}
+
+.lp3-landing .lp3-border-primary {
+  border-color: hsl(var(--lp3-primary));
+}
+
+.lp3-landing .lp3-bg-accent {
+  background-color: hsl(var(--lp3-accent));
+}
+
+.lp3-landing .lp3-text-accent {
+  color: hsl(var(--lp3-accent));
+}
+
+.lp3-landing .lp3-bg-secondary {
+  background-color: hsl(var(--lp3-secondary));
+}
+
+.lp3-landing .lp3-text-secondary {
+  color: hsl(var(--lp3-secondary));
+}
+
+.lp3-landing .lp3-bg-muted {
+  background-color: hsl(var(--lp3-muted));
+}
+
+.lp3-landing .lp3-text-muted {
+  color: hsl(var(--lp3-muted-foreground));
+}
+
+.lp3-landing .lp3-bg-background {
+  background-color: hsl(var(--lp3-background));
+}
+
+.lp3-landing .lp3-text-foreground {
+  color: hsl(var(--lp3-foreground));
+}

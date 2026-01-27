@@ -1,0 +1,27 @@
+main → stable code
+✅ develop → ongoing integration
+✅ feature/* → individual tasks/features
+
+# Switch to develop and pull latest
+git checkout develop
+git pull origin develop
+
+# Switch back to your feature branch
+git checkout feature/login / git checkout -b feature/login
+
+# Merge latest develop into your feature branch
+git merge develop
+
+# after coding 
+git add .
+git commit -m "Added login module"
+git push -u origin feature/login
+
+# If someone else merged a feature into develop while you were coding:
+git checkout develop
+git pull origin develop       # get latest changes
+git checkout feature/login
+git merge develop             # bring new updates into your branch
+
+create new feature branch 
+git checkout -b feature/branch-name

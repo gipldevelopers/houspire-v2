@@ -1,0 +1,67 @@
+// When creating new project, navigate with type parameter
+// src/components/projects/ProjectCreation.js or similar
+const handleCreateProject = async (projectData) => {
+  try {
+    const result = await projectService.createProject(projectData);
+    if (result.success) {
+      // Redirect to packages page with new-project type
+      router.push(`/packages?type=new-project&projectId=${result.data.project.publicId}`);
+    }
+  } catch (error) {
+    // Handle error
+  }
+};
+------------------------------
+// src/components/dashboard/ProjectCard.js or similar
+const ProjectCard = ({ project }) => {
+  const router = useRouter();
+
+  const handlePurchasePackage = () => {
+    // For existing projects that need package purchase
+    router.push(`/packages?type=package&projectId=${project.publicId}`);
+  };
+
+  const handlePurchaseAddons = () => {
+    // For adding addons to existing projects
+    router.push(`/packages?type=addons-only&projectId=${project.publicId}`);
+  };
+
+  return (
+    <Card>
+      <CardContent>
+        <h3>{project.title}</h3>
+        <p>{project.projectType} • {project.areaSqFt} sq ft</p>
+        
+        <div className="flex gap-2 mt-4">
+          {!project.selectedPlan && (
+            <Button onClick={handlePurchasePackage}>
+              Purchase Package
+            </Button>
+          )}
+          <Button variant="outline" onClick={handlePurchaseAddons}>
+            Add Add-ons
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+
+//for send direct message 
+await api.post("/whatsapp/send", {
+  projectPublicId,    // auto resolves user & phone
+  message: "Your BOQ is delayed by 1 day. Sorry for the inconvenience 🙏",
+});
+
+------------------------------------------------------------
+
+ Updated Project management admin Statistics Calculation
+Total: All projects
+Pending: Projects that haven't started or are in early stages (no designStartTime or all phases PENDING)
+Completed: Projects where RENDERS, BOQ, and VENDORS are all sent (using isProjectCompleted())
+Overdue: Timeline expired but not all three phases sent
+Active: Timeline running and not completed
+Urgent: Critical time remaining (< 24h for 72h plans, < 12h for 48h plans)
+Ready to Start: Payment completed but timer not started
+Payment Pending: Projects awaiting payment
