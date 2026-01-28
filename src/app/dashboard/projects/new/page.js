@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { 
+import {
   ArrowLeft,
   Home,
   Building,
@@ -20,11 +20,11 @@ import {
   Clock,
   Zap,
   Heart,
-  Search, 
-  Palette, 
-  Star, 
-  TrendingUp, 
-  Grid3X3, 
+  Search,
+  Palette,
+  Star,
+  TrendingUp,
+  Grid3X3,
   List,
   Loader2,
   ChevronRight,
@@ -115,7 +115,7 @@ export default function NewProjectPage() {
   const [stylesError, setStylesError] = useState(null);
   const [mobileView, setMobileView] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     projectType: '',
     title: '',
@@ -130,7 +130,7 @@ export default function NewProjectPage() {
     timeline: '',
     selectedStyleId: null
   });
-  
+
   const [projectCreated, setProjectCreated] = useState(false);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -148,7 +148,7 @@ export default function NewProjectPage() {
     const checkMobile = () => {
       setMobileView(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -177,29 +177,29 @@ export default function NewProjectPage() {
       await fetchDesignStyles();
       setIsInitialized(true);
     };
-    
+
     initializeData();
   }, []);
 
   const getImageUrl = (imagePath) => {
-  if (!imagePath) return '/styles/default-style.jpg';
-  
-  // If it's already a full URL, return as is
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-    return imagePath;
-  }
-  
-  // Prepend server URL for relative paths
-  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
-  return `${serverUrl}${imagePath}`;
-};
+    if (!imagePath) return '/styles/default-style.jpg';
+
+    // If it's already a full URL, return as is
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+
+    // Prepend server URL for relative paths
+    const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
+    return `${serverUrl}${imagePath}`;
+  };
 
   const checkPopupData = async () => {
     const popupData = localStorage.getItem(POPUP_DATA_KEY);
     if (popupData) {
       try {
         const parsedData = JSON.parse(popupData);
-        
+
         // Map popup data to form data structure
         const mappedData = {
           projectType: mapPropertyTypeToProjectType(parsedData.propertyType),
@@ -212,21 +212,21 @@ export default function NewProjectPage() {
           budgetRange: parsedData.budgetRange || '',
           timeline: parsedData.timeline || ''
         };
-        
+
         // Update form data with popup data
         setFormData(prev => ({
           ...prev,
           ...mappedData
         }));
-        
+
         // Auto-advance to style selection step since first 3 steps are pre-filled
         setCurrentStep(4);
-        
+
         // Clear popup data immediately so user is treated as normal
         localStorage.removeItem(POPUP_DATA_KEY);
-        
+
         toast.success('Project details loaded successfully!');
-        
+
       } catch (error) {
         console.error('❌ Error loading popup data:', error);
         localStorage.removeItem(POPUP_DATA_KEY);
@@ -237,7 +237,7 @@ export default function NewProjectPage() {
   const mapPropertyTypeToProjectType = (propertyType) => {
     const mapping = {
       '2bhk': 'TWO_BHK',
-      '3bhk': 'THREE_BHK', 
+      '3bhk': 'THREE_BHK',
       '4bhk': 'FOUR_BHK',
       'other': 'CUSTOM'
     };
@@ -249,7 +249,7 @@ export default function NewProjectPage() {
     if (savedFormData) {
       try {
         const parsedData = JSON.parse(savedFormData);
-        
+
         setFormData(prev => ({
           ...prev,
           ...parsedData.formData,
@@ -257,7 +257,7 @@ export default function NewProjectPage() {
         }));
         setCurrentStep(parsedData.currentStep || 1);
         setFavorites(new Set(parsedData.favorites || []));
-        
+
         // Restore UI state
         if (parsedData.searchQuery) setSearchQuery(parsedData.searchQuery);
         if (parsedData.sortBy) setSortBy(parsedData.sortBy);
@@ -270,40 +270,40 @@ export default function NewProjectPage() {
   };
 
   const handlePincodeChange = (value) => {
-      // Remove non-numeric characters
-      const numericValue = value.replace(/\D/g, '');
-      // Limit to 6 digits
-      const formattedValue = numericValue.slice(0, 6);
-      handleInputChange('pincode', formattedValue);
-    };
+    // Remove non-numeric characters
+    const numericValue = value.replace(/\D/g, '');
+    // Limit to 6 digits
+    const formattedValue = numericValue.slice(0, 6);
+    handleInputChange('pincode', formattedValue);
+  };
 
   const fetchDesignStyles = async () => {
-  setLoadingStyles(true);
-  setStylesError(null);
-  
-  try {
-    const response = await projectService.getDesignStyles({
-      // ✅ REMOVE: featured: true, 
-      limit: 50
-    });
+    setLoadingStyles(true);
+    setStylesError(null);
 
-    if (response.success) {
-      setDesignStyles(response.data.styles || []);
-    } else {
-      setStylesError(response.message || 'Failed to load design styles');
+    try {
+      const response = await projectService.getDesignStyles({
+        // ✅ REMOVE: featured: true, 
+        limit: 50
+      });
+
+      if (response.success) {
+        setDesignStyles(response.data.styles || []);
+      } else {
+        setStylesError(response.message || 'Failed to load design styles');
+      }
+    } catch (error) {
+      console.error('Error fetching styles:', error);
+      setStylesError('Failed to load design styles. Please try again.');
+    } finally {
+      setLoadingStyles(false);
     }
-  } catch (error) {
-    console.error('Error fetching styles:', error);
-    setStylesError('Failed to load design styles. Please try again.');
-  } finally {
-    setLoadingStyles(false);
-  }
-};
+  };
 
   // Save form data whenever it changes
   useEffect(() => {
     if (!isInitialized) return;
-    
+
     const dataToSave = {
       formData,
       currentStep,
@@ -313,7 +313,7 @@ export default function NewProjectPage() {
       viewMode,
       timestamp: Date.now()
     };
-    
+
     localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(dataToSave));
   }, [formData, currentStep, favorites, searchQuery, sortBy, viewMode, isInitialized]);
 
@@ -322,47 +322,77 @@ export default function NewProjectPage() {
   // Generate project title based on user name and project type
   const generateProjectTitle = (projectType) => {
     if (!projectType || !userName) return '';
-    
+
     const typeMap = {
       'TWO_BHK': '2 BHK',
       'THREE_BHK': '3 BHK',
       'FOUR_BHK': '4 BHK',
       'CUSTOM': 'Custom Space'
     };
-    
+
     const typeName = typeMap[projectType] || 'Project';
     // Extract first name if full name exists
     const firstName = userName.split(' ')[0];
     return `${firstName}'s ${typeName}`;
   };
 
+  // Stabilize the template choice for this session
+  const [templateIndex] = useState(Math.floor(Math.random() * 7));
+
   // Generate meaningful project description (30 words)
-  const generateProjectDescription = (title, projectType, city) => {
+  const generateProjectDescription = (title, projectType, city, budgetRangeValue, styleName) => {
     if (!title && !projectType) return '';
-    
+
     const typeMap = {
-      'TWO_BHK': '2 BHK apartment',
-      'THREE_BHK': '3 BHK apartment',
-      'FOUR_BHK': '4 BHK apartment',
+      'TWO_BHK': '2 BHK',
+      'THREE_BHK': '3 BHK',
+      'FOUR_BHK': '4 BHK',
       'CUSTOM': 'custom space'
     };
-    
+
+    const budgetMap = {
+      'ECONOMY': 'economy',
+      'STANDARD': 'standard',
+      'PREMIUM': 'premium',
+      'LUXURY': 'luxury'
+    };
+
     const typeName = typeMap[projectType] || 'space';
-    const cityPart = city ? ` located in ${city}` : '';
-    const titlePart = title ? title.replace(/'s \d+ BHK|'s Custom Space/g, '') : '';
-    
-    // Create a meaningful 30-word description
-    const description = `Transform this ${typeName}${cityPart} into a beautiful, functional living space. ${titlePart ? `This ${titlePart} project` : 'This project'} aims to create a modern, comfortable home that reflects your personal style and meets all your lifestyle needs. We'll focus on optimizing space utilization, incorporating contemporary design elements, and ensuring every room serves its purpose while maintaining aesthetic appeal.`;
-    
+    const budgetName = budgetMap[budgetRangeValue] || 'flexible';
+    const styleStr = styleName || 'modern';
+    const cityPart = city ? ` in ${city}` : '';
+
+    // 7 Meaningful variants (Customer POV)
+    const templates = [
+      `I want to transform my ${typeName}${cityPart} into a beautiful ${styleStr} sanctuary. I'm looking for smart space utilization and premium finishes, carefully planned within a ${budgetName} budget to meet my lifestyle needs.`,
+
+      `I'm seeking the perfect blend of ${styleStr} aesthetics and functionality in this ${typeName}${cityPart}. My goal is to create a tailored living space that elevates my daily life, within a ${budgetName} investment plan.`,
+
+      `My vision is a modern home: Redesigning this ${typeName}${cityPart} with a focus on ${styleStr} elegance. Optimizing for a ${budgetName} range, I want a space that offers comfort, style, and enduring value.`,
+
+      `I want to unlock the potential of my ${typeName}${cityPart}. Embracing a ${styleStr} design philosophy, I want a sophisticated home that balances luxury and practicality, perfectly aligned with my ${budgetName} goals.`,
+
+      `I'm looking to reimagine urban living${cityPart} with this ${typeName} renovation. Featuring ${styleStr} elements and a calculated ${budgetName} approach, I want a home that is both beautiful and highly functional.`,
+
+      `I'm crafting my dream home${cityPart}. This ${typeName} makeover needs to combine ${styleStr} vibes with smart planning. Targeting the ${budgetName} segment, I want every square foot to reflect my personality.`,
+
+      `I want to elevate my lifestyle with this ${styleStr} inspired ${typeName}${cityPart}. I need a harmonious environment that maximizes space and light, all delivered within a ${budgetName} framework.`
+    ];
+
+    // Select template (use stored index for stability)
+    const description = templates[templateIndex % templates.length];
+
     // Limit to approximately 30 words
     const words = description.split(' ');
-    return words.slice(0, 30).join(' ') + (words.length > 30 ? '...' : '');
+    // Filter out empty strings from double spaces if variables are missing
+    const cleanWords = words.filter(w => w.length > 0);
+    return cleanWords.slice(0, 35).join(' ') + (cleanWords.length > 35 ? '...' : '');
   };
 
   const handleInputChange = (field, value) => {
     setFormData(prev => {
       const updated = { ...prev, [field]: value };
-      
+
       // Auto-generate title when project type is selected
       if (field === 'projectType' && value && !prev.title) {
         const generatedTitle = generateProjectTitle(value);
@@ -370,45 +400,63 @@ export default function NewProjectPage() {
           updated.title = generatedTitle;
         }
       }
-      
+
       return updated;
     });
-    
+
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
 
-  // Auto-update description when title, project type, or city changes
+  // Auto-update description when key fields change
   useEffect(() => {
     if (!formData.projectType) return;
-    
+
     const currentTitle = formData.title || generateProjectTitle(formData.projectType);
     if (!currentTitle) return;
-    
+
+    // Get style name if selected
+    const selectedStyle = designStyles.find(s => s.id === formData.selectedStyleId);
+
     const generatedDesc = generateProjectDescription(
       currentTitle,
       formData.projectType,
-      formData.city
+      formData.city,
+      formData.budgetRange,
+      selectedStyle?.name
     );
-    
+
     if (!generatedDesc) return;
-    
+
     // Auto-generate description if empty
     if (!formData.description) {
       setFormData(prev => ({ ...prev, description: generatedDesc }));
       return;
     }
-    
-    // Update description if it was auto-generated (contains key phrases)
-    const isAutoGenerated = formData.description.includes('Transform this') || 
-                           formData.description.includes('beautiful, functional') ||
-                           formData.description.includes('modern, comfortable');
-    
+
+    // Update description if it was auto-generated.
+    const autoGenMarkers = [
+      'I want to transform', 'I\'m seeking the perfect', 'My vision is',
+      'I want to unlock', 'I\'m looking to reimagine', 'I\'m crafting my dream',
+      'I want to elevate', 'beautiful, functional' // fallback for old ones
+    ];
+
+    const isAutoGenerated = autoGenMarkers.some(marker => formData.description.includes(marker));
+
     if (isAutoGenerated) {
       setFormData(prev => ({ ...prev, description: generatedDesc }));
     }
-  }, [formData.projectType, formData.title, formData.city, userName]);
+  }, [
+    formData.projectType,
+    formData.title,
+    formData.city,
+    formData.budgetRange,
+    formData.selectedStyleId,
+    userName,
+    designStyles,
+    templateIndex
+  ]);
 
   const toggleFavorite = (styleId) => {
     const newFavorites = new Set(favorites);
@@ -430,29 +478,29 @@ export default function NewProjectPage() {
 
   const validateStep = (step) => {
     const newErrors = {};
-    
+
     switch (step) {
       case 1:
         if (!formData.projectType) newErrors.projectType = 'Project type is required';
         break;
-        
+
       case 2:
         if (!formData.title?.trim()) newErrors.title = 'Project title is required';
         if (!formData.city?.trim()) newErrors.city = 'City is required';
-         // Add pincode validation
+        // Add pincode validation
         if (!formData.pincode?.trim() || formData.pincode.length !== 6) newErrors.pincode = 'Valid 6-digit pincode is required';
         break;
-        
+
       case 3:
         // if (!formData.budgetRange) newErrors.budgetRange = 'Budget range is required';
         // if (!formData.timeline) newErrors.timeline = 'Timeline is required';
         break;
-        
+
       case 4:
         if (!formData.selectedStyleId) newErrors.selectedStyleId = 'Please select a design style';
         break;
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -478,9 +526,9 @@ export default function NewProjectPage() {
 
   const handleSubmit = async () => {
     if (!validateStep(4) || projectCreated) return;
-    
+
     setIsSubmitting(true);
-    
+
     try {
       const projectData = {
         title: formData.title,
@@ -505,64 +553,27 @@ export default function NewProjectPage() {
         const projectId = response.data.project.id;
         setCreatedProjectId(projectId);
         setProjectCreated(true);
-        
+
         // ✅ Automatically set phase to onboarding questionnaire
         await projectService.updateProjectPhase(projectId, {
           currentPhase: 'ONBOARDING_QUESTIONNAIRE'
         });
-        
+
         // Clear stored data
         localStorage.removeItem(FORM_STORAGE_KEY);
         localStorage.removeItem(POPUP_DATA_KEY);
-        
+
         toast.success('Project created successfully!');
-        
+
         // Show onboarding modal for ALL users (treat everyone the same)
         setShowOnboardingModal(true);
       } else {
-        // Handle validation errors
-        if (response.errors && Array.isArray(response.errors) && response.errors.length > 0) {
-          // Format validation errors for display
-          const errorMessages = response.errors.map(err => {
-            // Capitalize field name and show message
-            const fieldName = err.field.split('.').pop().charAt(0).toUpperCase() + err.field.split('.').pop().slice(1);
-            return `${fieldName}: ${err.message}`;
-          });
-          
-          // Show first error as main message, others in description
-          const mainError = errorMessages[0];
-          const otherErrors = errorMessages.slice(1);
-          
-          toast.error(mainError, {
-            description: otherErrors.length > 0 ? otherErrors.join('\n') : undefined,
-            duration: 5000,
-          });
-        } else {
-          // Fallback to generic error message
-          toast.error(response.message || 'Failed to create project. Please try again.');
-        }
+        throw new Error(response.message || 'Failed to create project');
       }
-      
+
     } catch (error) {
       console.error('Error creating project:', error);
-      
-      // Check if error has response data with validation errors
-      if (error.response?.data?.errors && Array.isArray(error.response.data.errors) && error.response.data.errors.length > 0) {
-        const errorMessages = error.response.data.errors.map(err => {
-          const fieldName = err.field.split('.').pop().charAt(0).toUpperCase() + err.field.split('.').pop().slice(1);
-          return `${fieldName}: ${err.message}`;
-        });
-        
-        const mainError = errorMessages[0];
-        const otherErrors = errorMessages.slice(1);
-        
-        toast.error(mainError, {
-          description: otherErrors.length > 0 ? otherErrors.join('\n') : undefined,
-          duration: 5000,
-        });
-      } else {
-        toast.error(error.message || 'Failed to create project. Please try again.');
-      }
+      toast.error(error.message || 'Failed to create project. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -610,12 +621,12 @@ export default function NewProjectPage() {
   // NEW: Resume Modal Component
   const ResumeModal = () => {
     if (!showResumeModal || !existingProject) return null;
-    
+
     const getPhaseName = (phase) => {
       const phaseNames = {
         'PROJECT_SETUP': 'Project Setup',
         'ONBOARDING_QUESTIONNAIRE': 'Onboarding Questions',
-        'FILE_UPLOADS': 'File Uploads', 
+        'FILE_UPLOADS': 'File Uploads',
         'PAYMENT': 'Payment',
         'DESIGN_QUESTIONNAIRE': 'Design Questionnaire'
       };
@@ -629,7 +640,7 @@ export default function NewProjectPage() {
         'PAYMENT': `/packages?type=new-project&projectId=${existingProject.id}`,
         'DESIGN_QUESTIONNAIRE': `/dashboard/projects/${existingProject.id}/design-questionnaire`
       };
-      
+
       const redirectUrl = redirectUrls[existingProject.currentPhase];
       if (redirectUrl) {
         router.push(redirectUrl);
@@ -657,8 +668,8 @@ export default function NewProjectPage() {
             <Button onClick={handleResume} className="bg-blue-600 text-white flex-1">
               Resume Project
             </Button>
-            <Button 
-              onClick={handleStartNew} 
+            <Button
+              onClick={handleStartNew}
               variant="outline"
               className="flex-1"
             >
@@ -674,7 +685,7 @@ export default function NewProjectPage() {
   const filteredStyles = designStyles
     .filter(style => {
       if (!searchQuery) return true;
-      
+
       const query = searchQuery.toLowerCase();
       return (
         style.name.toLowerCase().includes(query) ||
@@ -703,13 +714,13 @@ export default function NewProjectPage() {
     <div className="bg-card border border-border rounded-xl p-4 lg:p-6 shadow-sm">
       <div className="relative">
         {/* Connecting Line - Hidden on mobile, visible on larger screens */}
-        <div 
+        <div
           className="absolute top-6 left-4 right-4 h-0.5 bg-border z-0 hidden lg:block"
           style={{
             background: `linear-gradient(to right, hsl(var(--primary)) ${progress}%, hsl(var(--border)) ${progress}%)`
           }}
         />
-        
+
         {/* Steps Grid - 2x2 on mobile, single row on larger screens */}
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 relative z-10">
           {formSteps.map((step, index) => {
@@ -717,56 +728,51 @@ export default function NewProjectPage() {
             const isCompleted = currentStep > step.id;
             const isCurrent = currentStep === step.id;
             const isClickable = step.id < currentStep;
-            
+
             return (
               <button
                 key={step.id}
                 onClick={() => isClickable && handleStepClick(step.id)}
                 disabled={!isClickable}
-                className={`flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl transition-all duration-300 ${
-                  isClickable ? 'cursor-pointer hover:bg-accent/50' : 'cursor-default'
-                } ${
-                  isCurrent 
-                    ? 'bg-primary/10 border-2 border-primary/30 shadow-lg scale-105' 
+                className={`flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl transition-all duration-300 ${isClickable ? 'cursor-pointer hover:bg-accent/50' : 'cursor-default'
+                  } ${isCurrent
+                    ? 'bg-primary/10 border-2 border-primary/30 shadow-lg scale-105'
                     : isCompleted
-                    ? 'bg-green-50 dark:bg-green-950/20 border-2 border-green-300 dark:border-green-700 shadow-sm'
-                    : 'bg-muted/30 border-2 border-border'
-                }`}
+                      ? 'bg-green-50 dark:bg-green-950/20 border-2 border-green-300 dark:border-green-700 shadow-sm'
+                      : 'bg-muted/30 border-2 border-border'
+                  }`}
               >
                 {/* Step Circle with Icon */}
                 <div className="relative">
-                  <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300 border-2 ${
-                    isCompleted 
-                      ? 'bg-green-500 border-green-600 text-white shadow-md' 
-                      : isCurrent
+                  <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300 border-2 ${isCompleted
+                    ? 'bg-green-500 border-green-600 text-white shadow-md'
+                    : isCurrent
                       ? 'bg-primary border-primary text-white shadow-lg'
                       : 'bg-background border-border text-muted-foreground'
-                  }`}>
+                    }`}>
                     {isCompleted ? (
                       <CheckCircle2 className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
                     ) : (
                       <Icon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
                     )}
                   </div>
-                  
+
                   {/* Step Number Badge */}
-                  <div className={`absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-full text-[10px] sm:text-xs font-bold flex items-center justify-center border-2 ${
-                    isCompleted 
-                      ? 'bg-white border-green-500 text-green-700' 
-                      : isCurrent
+                  <div className={`absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-full text-[10px] sm:text-xs font-bold flex items-center justify-center border-2 ${isCompleted
+                    ? 'bg-white border-green-500 text-green-700'
+                    : isCurrent
                       ? 'bg-white border-primary text-primary shadow-md'
                       : 'bg-muted border-border text-muted-foreground'
-                  }`}>
+                    }`}>
                     {step.id}
                   </div>
                 </div>
-                
+
                 {/* Step Text */}
                 <div className="text-center space-y-1 flex-1 w-full">
-                  <p className={`text-xs font-semibold transition-colors line-clamp-1 ${
-                    isCurrent ? 'text-primary' : 
+                  <p className={`text-xs font-semibold transition-colors line-clamp-1 ${isCurrent ? 'text-primary' :
                     isCompleted ? 'text-green-700 dark:text-green-300' : 'text-muted-foreground'
-                  }`}>
+                    }`}>
                     {step.name}
                   </p>
                   <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-2 hidden sm:block">
@@ -817,20 +823,19 @@ export default function NewProjectPage() {
                 <p className="text-muted-foreground text-base lg:text-lg mt-2">Select the type of space you're designing</p>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-1 gap-4 lg:gap-6 lg:grid-cols-2">
               {projectTypes.map((type) => {
                 const Icon = type.icon;
                 const isSelected = formData.projectType === type.id;
-                
+
                 return (
                   <Card
                     key={type.id}
-                    className={`cursor-pointer transition-all duration-300 border-2 ${
-                      isSelected 
-                        ? 'border-primary bg-primary/5 shadow-lg scale-105' 
-                        : 'border-border hover:border-primary/50 hover:scale-102'
-                    }`}
+                    className={`cursor-pointer transition-all duration-300 border-2 ${isSelected
+                      ? 'border-primary bg-primary/5 shadow-lg scale-105'
+                      : 'border-border hover:border-primary/50 hover:scale-102'
+                      }`}
                     onClick={() => {
                       handleInputChange('projectType', type.id);
                       // Auto-advance to next step after project type is set
@@ -842,16 +847,14 @@ export default function NewProjectPage() {
                   >
                     <CardContent className="p-4 lg:p-6">
                       <div className="flex items-center space-x-3 lg:space-x-4">
-                        <div className={`p-2 lg:p-3 rounded-xl flex-shrink-0 ${
-                          isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                        }`}>
+                        <div className={`p-2 lg:p-3 rounded-xl flex-shrink-0 ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                          }`}>
                           <Icon className="w-5 h-5 lg:w-6 lg:h-6" />
                         </div>
                         <div className="flex-1 space-y-2 min-w-0">
                           <div className="flex items-center gap-2">
-                            <h3 className={`font-semibold text-base lg:text-lg line-clamp-1 ${
-                              isSelected ? 'text-primary' : 'text-foreground'
-                            }`}>
+                            <h3 className={`font-semibold text-base lg:text-lg line-clamp-1 ${isSelected ? 'text-primary' : 'text-foreground'
+                              }`}>
                               {type.name}
                             </h3>
                             {type.popular && (
@@ -897,7 +900,7 @@ export default function NewProjectPage() {
                 <p className="text-muted-foreground text-base lg:text-lg mt-2">Tell us about your space</p>
               </div>
             </div>
-            
+
             <div className="grid gap-4 lg:gap-6">
               <div className="space-y-3">
                 <Label htmlFor="title" className="text-base font-semibold text-foreground">
@@ -917,7 +920,7 @@ export default function NewProjectPage() {
                   </div>
                 )}
               </div>
-              
+
               <div className="space-y-3">
                 <Label htmlFor="description" className="text-base font-semibold text-foreground">
                   Project Description (Optional)
@@ -945,7 +948,7 @@ export default function NewProjectPage() {
                     className="h-12 text-base border-border"
                   />
                 </div>
-                
+
                 <div className="space-y-3">
                   <Label htmlFor="city" className="text-base font-semibold text-foreground">City *</Label>
                   <Input
@@ -984,7 +987,7 @@ export default function NewProjectPage() {
                   )}
                   <p className="text-sm text-muted-foreground">postal code for your area</p>
                 </div>
-                
+
                 <div className="space-y-3">
                   <Label htmlFor="areaSqFt" className="text-base font-semibold text-foreground flex items-center gap-2">
                     <Ruler className="w-4 h-4" />
@@ -1019,7 +1022,7 @@ export default function NewProjectPage() {
                 <p className="text-muted-foreground text-base lg:text-lg mt-2">Set your investment range and project timeline</p>
               </div>
             </div>
-            
+
             <div className="space-y-6 lg:space-y-8">
               {/* Budget Range - Clickable Cards */}
               <div className="space-y-3">
@@ -1034,11 +1037,10 @@ export default function NewProjectPage() {
                     return (
                       <Card
                         key={range.value}
-                        className={`cursor-pointer transition-all duration-300 border-2 touch-manipulation active:scale-95 ${
-                          isSelected 
-                            ? 'border-primary bg-primary/5 shadow-lg scale-105' 
-                            : 'border-border hover:border-primary/50 hover:scale-102'
-                        }`}
+                        className={`cursor-pointer transition-all duration-300 border-2 touch-manipulation active:scale-95 ${isSelected
+                          ? 'border-primary bg-primary/5 shadow-lg scale-105'
+                          : 'border-border hover:border-primary/50 hover:scale-102'
+                          }`}
                         onClick={() => {
                           handleInputChange('budgetRange', range.value);
                           // Auto-advance to next step if both budget and timeline are selected
@@ -1055,15 +1057,13 @@ export default function NewProjectPage() {
                       >
                         <CardContent className="p-3 sm:p-4 lg:p-5">
                           <div className="flex flex-col items-center text-center space-y-2">
-                            <div className={`p-2 lg:p-3 rounded-xl flex-shrink-0 ${
-                              isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                            }`}>
+                            <div className={`p-2 lg:p-3 rounded-xl flex-shrink-0 ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                              }`}>
                               <Icon className="w-5 h-5 lg:w-6 lg:h-6" />
                             </div>
                             <div className="flex-1 min-w-0 w-full">
-                              <h3 className={`font-semibold text-sm sm:text-base lg:text-lg line-clamp-1 ${
-                                isSelected ? 'text-primary' : 'text-foreground'
-                              }`}>
+                              <h3 className={`font-semibold text-sm sm:text-base lg:text-lg line-clamp-1 ${isSelected ? 'text-primary' : 'text-foreground'
+                                }`}>
                                 {range.label}
                               </h3>
                               <p className="text-xs sm:text-sm text-muted-foreground mt-1">{range.range}</p>
@@ -1098,11 +1098,10 @@ export default function NewProjectPage() {
                     return (
                       <Card
                         key={timeline.value}
-                        className={`cursor-pointer transition-all duration-300 border-2 touch-manipulation active:scale-95 ${
-                          isSelected 
-                            ? 'border-primary bg-primary/5 shadow-lg scale-105' 
-                            : 'border-border hover:border-primary/50 hover:scale-102'
-                        }`}
+                        className={`cursor-pointer transition-all duration-300 border-2 touch-manipulation active:scale-95 ${isSelected
+                          ? 'border-primary bg-primary/5 shadow-lg scale-105'
+                          : 'border-border hover:border-primary/50 hover:scale-102'
+                          }`}
                         onClick={() => {
                           handleInputChange('timeline', timeline.value);
                           // Auto-advance to next step if both budget and timeline are selected
@@ -1116,15 +1115,13 @@ export default function NewProjectPage() {
                       >
                         <CardContent className="p-3 sm:p-4 lg:p-5">
                           <div className="flex items-center space-x-3 lg:space-x-4">
-                            <div className={`p-2 lg:p-3 rounded-xl flex-shrink-0 ${
-                              isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                            }`}>
+                            <div className={`p-2 lg:p-3 rounded-xl flex-shrink-0 ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                              }`}>
                               <Icon className="w-5 h-5 lg:w-6 lg:h-6" />
                             </div>
                             <div className="flex-1 space-y-1 min-w-0">
-                              <h3 className={`font-semibold text-sm sm:text-base lg:text-lg line-clamp-1 ${
-                                isSelected ? 'text-primary' : 'text-foreground'
-                              }`}>
+                              <h3 className={`font-semibold text-sm sm:text-base lg:text-lg line-clamp-1 ${isSelected ? 'text-primary' : 'text-foreground'
+                                }`}>
                                 {timeline.label}
                               </h3>
                               <p className="text-xs sm:text-sm text-muted-foreground">{timeline.duration}</p>
@@ -1158,7 +1155,7 @@ export default function NewProjectPage() {
                         Budget Guidance
                       </h4>
                       <p className="text-blue-700 dark:text-blue-300 text-sm lg:text-base">
-                        Your budget range helps us recommend the best materials and design options. 
+                        Your budget range helps us recommend the best materials and design options.
                         Don't worry - you can always adjust this later.
                       </p>
                     </div>
@@ -1299,23 +1296,22 @@ export default function NewProjectPage() {
                   </div>
                 ) : (
                   <div className={
-                    viewMode === 'grid' 
-                      ? "grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 lg:gap-4" 
+                    viewMode === 'grid'
+                      ? "grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 lg:gap-4"
                       : "space-y-2 sm:space-y-3 lg:space-y-4"
                   }>
                     {filteredStyles.map((style) => {
                       const isSelected = formData.selectedStyleId === style.id;
                       const isFavorite = favorites.has(style.id);
-                      
+
                       if (viewMode === 'grid') {
                         return (
-                          <Card 
+                          <Card
                             key={style.id}
-                            className={`bg-card border-2 transition-all duration-300 overflow-hidden group cursor-pointer touch-manipulation active:scale-95 ${
-                              isSelected 
-                                ? 'border-primary shadow-lg scale-105' 
-                                : 'border-border hover:border-primary/50 hover:shadow-md'
-                            }`}
+                            className={`bg-card border-2 transition-all duration-300 overflow-hidden group cursor-pointer touch-manipulation active:scale-95 ${isSelected
+                              ? 'border-primary shadow-lg scale-105'
+                              : 'border-border hover:border-primary/50 hover:shadow-md'
+                              }`}
                             onClick={() => toggleStyleSelection(style.id)}
                           >
                             <div className="relative">
@@ -1328,24 +1324,22 @@ export default function NewProjectPage() {
                                     e.target.src = getImageUrl('/styles/default-style.jpg');
                                   }}
                                 />
-                                <div className={`absolute inset-0 bg-gradient-to-t from-black/50 to-transparent transition-all duration-300 ${
-                                  isSelected ? 'opacity-100' : 'opacity-0 group-active:opacity-100'
-                                }`} />
+                                <div className={`absolute inset-0 bg-gradient-to-t from-black/50 to-transparent transition-all duration-300 ${isSelected ? 'opacity-100' : 'opacity-0 group-active:opacity-100'
+                                  }`} />
                               </div>
-                              
+
                               {/* Selection Badge - Always visible when selected */}
                               {isSelected && (
                                 <div className="absolute top-2 left-2 z-10">
-                                    <div className="bg-green-500 text-white rounded-full p-1.5 sm:p-2 shadow-lg">
-                                      <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4" />
-                                    </div>
+                                  <div className="bg-green-500 text-white rounded-full p-1.5 sm:p-2 shadow-lg">
+                                    <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                                  </div>
                                 </div>
                               )}
-                              
+
                               {/* Favorite Button - Visible on mobile too */}
-                              <div className={`absolute top-2 right-2 z-10 transition-all duration-300 ${
-                                isSelected || mobileView ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                              }`}>
+                              <div className={`absolute top-2 right-2 z-10 transition-all duration-300 ${isSelected || mobileView ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                                }`}>
                                 <Button
                                   size="sm"
                                   variant="secondary"
@@ -1355,8 +1349,8 @@ export default function NewProjectPage() {
                                     toggleFavorite(style.id);
                                   }}
                                 >
-                                  <Heart 
-                                    className={`h-3 w-3 sm:h-4 sm:w-4 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} 
+                                  <Heart
+                                    className={`h-3 w-3 sm:h-4 sm:w-4 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`}
                                   />
                                 </Button>
                               </div>
@@ -1364,10 +1358,10 @@ export default function NewProjectPage() {
                               {/* Popularity Badge */}
                               {style.popularity > 85 && (
                                 <div className="absolute bottom-2 left-2 z-10">
-                                    <Badge className="bg-amber-500 text-white border-0 shadow-sm text-xs px-1.5 py-0.5">
-                                      <Star className="h-2 w-2 sm:h-3 sm:w-3 mr-1 fill-current" />
-                                      Popular
-                                    </Badge>
+                                  <Badge className="bg-amber-500 text-white border-0 shadow-sm text-xs px-1.5 py-0.5">
+                                    <Star className="h-2 w-2 sm:h-3 sm:w-3 mr-1 fill-current" />
+                                    Popular
+                                  </Badge>
                                 </div>
                               )}
                             </div>
@@ -1375,9 +1369,8 @@ export default function NewProjectPage() {
                             <CardContent className="p-2 sm:p-3 lg:p-4">
                               <div className="space-y-1.5 sm:space-y-2 lg:space-y-3">
                                 <div>
-                                  <h3 className={`font-semibold transition-colors line-clamp-1 mb-0.5 sm:mb-1 text-xs sm:text-sm lg:text-base ${
-                                    isSelected ? 'text-primary' : 'text-foreground group-active:text-primary'
-                                  }`}>
+                                  <h3 className={`font-semibold transition-colors line-clamp-1 mb-0.5 sm:mb-1 text-xs sm:text-sm lg:text-base ${isSelected ? 'text-primary' : 'text-foreground group-active:text-primary'
+                                    }`}>
                                     {style.name}
                                   </h3>
                                   <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1 sm:line-clamp-2">
@@ -1406,7 +1399,7 @@ export default function NewProjectPage() {
                       } else {
                         // List View
                         return (
-                          <Card 
+                          <Card
                             key={style.id}
                             className="bg-card border-border hover:shadow-md transition-all duration-300 cursor-pointer"
                             onClick={() => toggleStyleSelection(style.id)}
@@ -1424,7 +1417,7 @@ export default function NewProjectPage() {
                                     }}
                                   />
                                 </div>
-                                
+
                                 {/* Content */}
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-start justify-between mb-2">
@@ -1444,13 +1437,13 @@ export default function NewProjectPage() {
                                           toggleFavorite(style.id);
                                         }}
                                       >
-                                        <Heart 
-                                          className={`h-4 w-4 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} 
+                                        <Heart
+                                          className={`h-4 w-4 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`}
                                         />
                                       </Button>
                                     </div>
                                   </div>
-                                  
+
                                   <div className="flex flex-wrap gap-1 mb-2">
                                     {style.tags?.slice(0, 4).map((tag, index) => (
                                       <Badge
@@ -1463,10 +1456,10 @@ export default function NewProjectPage() {
                                     ))}
                                   </div>
                                 </div>
-                                
+
                                 {/* Action Button */}
                                 <div className="flex-shrink-0">
-                                  <Button 
+                                  <Button
                                     variant={isSelected ? "default" : "outline"}
                                     size="sm"
                                     onClick={(e) => {
@@ -1540,9 +1533,9 @@ export default function NewProjectPage() {
               <Badge variant="secondary" className="text-xs lg:text-sm bg-muted text-foreground font-medium px-2 lg:px-3 py-1">
                 Step {currentStep} of {formSteps.length}
               </Badge>
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={clearFormData}
                 className="text-xs text-muted-foreground hover:text-destructive hidden sm:flex"
               >
@@ -1583,7 +1576,7 @@ export default function NewProjectPage() {
               <span className="hidden sm:inline">Previous</span>
               <span className="sm:hidden">Back</span>
             </Button>
-            
+
             <div className="text-center order-1 sm:order-2 w-full sm:w-auto">
               <p className="text-sm text-muted-foreground">
                 {currentStep === 4 ? (
@@ -1597,9 +1590,9 @@ export default function NewProjectPage() {
                 )}
               </p>
             </div>
-            
+
             {currentStep < formSteps.length ? (
-              <Button 
+              <Button
                 onClick={handleNext}
                 className="bg-foreground text-background hover:bg-foreground/90 shadow-lg hover:shadow-xl transition-all w-full sm:w-auto order-3"
                 size={mobileView ? "sm" : "default"}
@@ -1609,8 +1602,8 @@ export default function NewProjectPage() {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             ) : (
-              <Button 
-                onClick={handleSubmit} 
+              <Button
+                onClick={handleSubmit}
                 disabled={isSubmitting || loadingStyles || projectCreated}
                 className="bg-foreground text-background hover:bg-foreground/90 shadow-lg hover:shadow-xl transition-all w-full sm:w-auto order-3"
                 size={mobileView ? "sm" : "default"}
@@ -1642,7 +1635,7 @@ export default function NewProjectPage() {
       </div>
 
       {/* Onboarding Modal - Show for ALL users */}
-      <OnboardingModal 
+      <OnboardingModal
         isOpen={showOnboardingModal}
         onClose={handleModalClose}
         onComplete={handleOnboardingComplete}
