@@ -17,8 +17,7 @@ import {
   Lock,
   ArrowRight,
   AlertCircle,
-  Loader2,
-  Home
+  Loader2
 } from 'lucide-react';
 import { userLoginSchema } from '@/lib/validations/auth';
 import { useAuth } from '@/context/AuthContext';
@@ -212,91 +211,62 @@ export function SigninForm() {
     }
   };
 
-  const sendMagicLink = async (data) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ success: true, message: 'Magic link sent successfully' });
-      }, 1000);
-    });
-  };
-
   return (
     <div className="min-h-screen flex bg-background">
-      {/* Left Side - Branding/Visual Section */}
-      <div className="hidden lg:flex lg:flex-1 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 dark:from-primary/20 dark:via-primary/10 dark:to-accent/20 relative overflow-hidden">
+      {/* Left Side - Branding/Visual Section (Hidden on mobile) */}
+      <div className="hidden lg:flex lg:w-5/12 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 dark:from-primary/20 dark:via-primary/10 dark:to-accent/20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-30" style={{
           backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--primary) / 0.15) 1px, transparent 0)`,
           backgroundSize: '24px 24px'
         }}></div>
-        <div className="relative z-10 flex flex-col justify-between p-12 w-full">
-          <div>
-            <Link href="/" className="inline-flex items-center space-x-2 mb-12 transition-opacity hover:opacity-80">
+        <div className="relative z-10 flex flex-col justify-center p-8 w-full">
+          <div className="max-w-sm mx-auto">
+            <Link href="/" className="inline-flex items-center space-x-2 mb-8 transition-opacity hover:opacity-80">
               <img
                 src="/logo_final.svg"
                 alt="Houspire"
                 className="h-8"
               />
             </Link>
-            <div className="max-w-md">
-              <h1 className="text-4xl font-bold tracking-tight text-foreground mb-4">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-foreground mb-3">
                 Welcome back to Houspire
               </h1>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Transform your space with AI-powered interior design. Sign in to continue your design journey and bring your vision to life.
+              <p className="text-base text-muted-foreground leading-relaxed">
+                Transform your space with AI-powered interior design.
               </p>
             </div>
-          </div>
-          <div className="text-sm text-muted-foreground">
-            <p>© {new Date().getFullYear()} Houspire. All rights reserved.</p>
           </div>
         </div>
       </div>
 
       {/* Right Side - Form Section */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-12 sm:px-8 lg:px-12 xl:px-16">
-        <div className="mx-auto w-full max-w-md">
-          {/* Mobile Logo & Home Button */}
-          <div className="lg:hidden mb-8 flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2 transition-opacity hover:opacity-80">
+      <div className="flex-1 flex items-center justify-center px-4 py-6 sm:px-6 lg:px-8 lg:w-7/12">
+        <div className="w-full max-w-md">
+          {/* Mobile Logo */}
+          <div className="lg:hidden mb-6 text-center">
+            <Link href="/" className="inline-flex items-center space-x-2 transition-opacity hover:opacity-80">
               <img
                 src="/logo_final.svg"
                 alt="Houspire"
                 className="h-7"
               />
             </Link>
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
-            >
-              <Home className="h-4 w-4" />
-              <span>Home</span>
-            </Link>
-          </div>
-
-          {/* Desktop Home Button */}
-          <div className="hidden lg:flex mb-8 justify-end">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 group"
-            >
-              <Home className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
-              <span>Home</span>
-            </Link>
           </div>
 
           {/* Form Header */}
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground mb-2">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground mb-1">
               Sign in to your account
             </h2>
-            <p className="text-base text-muted-foreground">
-              Enter your credentials to access your dashboard
+            <p className="text-sm text-muted-foreground">
+              Enter your credentials to continue
             </p>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-5">
             {/* Social Sign In Buttons */}
-            <div className="grid grid-cols-1 gap-3">
+            <div className="flex flex-row items-center justify-center gap-3">
               <GoogleSignInButton
                 onSuccess={(user) => {
                   setTimeout(() => router.push('/dashboard'), 1000);
@@ -321,12 +291,12 @@ export function SigninForm() {
               />
             </div>
 
-            <div className="relative py-2">
+            <div className="relative py-1">
               <div className="absolute inset-0 flex items-center">
                 <Separator />
               </div>
               <div className="relative flex justify-center text-xs uppercase tracking-wider">
-                <span className="bg-background px-4 text-muted-foreground font-medium">Or continue with email</span>
+                <span className="bg-background px-3 text-muted-foreground font-medium">Or continue with email</span>
               </div>
             </div>
 
@@ -381,19 +351,19 @@ export function SigninForm() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              <div className="space-y-2.5">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-semibold text-foreground">
                   Email Address
                   <span className="text-destructive ml-1">*</span>
                 </Label>
                 <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="email"
                     type="email"
                     placeholder="Enter your email address"
-                    className={`pl-10 h-12 bg-background border-input text-foreground text-base ${errors.email ? 'border-destructive focus:border-destructive focus:ring-destructive/20' : 'focus:ring-primary/20'
+                    className={`pl-10 h-11 bg-background border-input text-foreground ${errors.email ? 'border-destructive focus:border-destructive focus:ring-destructive/20' : 'focus:ring-primary/20'
                       }`}
                     disabled={loading}
                     {...register('email', {
@@ -402,25 +372,25 @@ export function SigninForm() {
                   />
                 </div>
                 {errors.email && (
-                  <p className="text-destructive text-xs flex items-center gap-1.5 mt-1.5">
-                    <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
+                  <p className="text-destructive text-xs flex items-center gap-1.5">
+                    <AlertCircle className="h-3 w-3 flex-shrink-0" />
                     {errors.email.message}
                   </p>
                 )}
               </div>
 
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 <Label htmlFor="password" className="text-sm font-semibold text-foreground">
                   Password
                   <span className="text-destructive ml-1">*</span>
                 </Label>
                 <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Enter your password"
-                    className={`pl-10 pr-10 h-12 bg-background border-input text-foreground text-base ${errors.password ? 'border-destructive focus:border-destructive focus:ring-destructive/20' : 'focus:ring-primary/20'
+                    className={`pl-10 pr-10 h-11 bg-background border-input text-foreground ${errors.password ? 'border-destructive focus:border-destructive focus:ring-destructive/20' : 'focus:ring-primary/20'
                       }`}
                     disabled={loading}
                     {...register('password', {
@@ -431,21 +401,31 @@ export function SigninForm() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     disabled={loading}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-destructive text-xs flex items-center gap-1.5 mt-1.5">
-                    <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
+                  <p className="text-destructive text-xs flex items-center gap-1.5">
+                    <AlertCircle className="h-3 w-3 flex-shrink-0" />
                     {errors.password.message}
                   </p>
                 )}
               </div>
 
-              <div className="flex items-center justify-end text-sm pt-1">
+              <div className="flex items-center justify-between text-sm pt-1">
+                <Button
+                  variant="ghost"
+                  onClick={handleOtpLogin}
+                  className="h-9 text-primary hover:text-primary/90 hover:bg-primary/10 transition-all"
+                  disabled={loading}
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  Login without password
+                </Button>
+                
                 <Link
                   href="/auth/forgot-password"
                   className="text-primary hover:text-primary/80 hover:underline transition-colors font-medium"
@@ -457,48 +437,32 @@ export function SigninForm() {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md hover:shadow-lg transition-all duration-200"
+                className="w-full h-11 font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md hover:shadow-lg transition-all"
                 disabled={loading}
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
-                    <Loader2 className="h-5 w-5 animate-spin" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     <span>Signing in...</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
                     <span>Sign In</span>
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="h-4 w-4" />
                   </div>
                 )}
               </Button>
             </form>
 
-            {/* Login without password Option */}
-            <div className="text-center pt-2">
-              <Button
-                variant="ghost"
-                onClick={handleOtpLogin}
-                className="w-full text-primary hover:text-primary/90 hover:bg-primary/10 transition-all duration-200"
-                disabled={loading}
-              >
-                <Mail className="h-4 w-4 mr-2" />
-                Login without password
-              </Button>
-            </div>
-
-            <div className="text-center text-sm pt-6 border-t border-border">
+            <div className="text-center pt-4 text-sm">
               <span className="text-muted-foreground">Don't have an account? </span>
               <Link href="/auth/signup" className="text-primary hover:text-primary/80 hover:underline font-semibold transition-colors">
                 Sign up
               </Link>
-            </div>
-
-            {/* Privacy Policy Link */}
-            <div className="text-center pt-4">
+              <span className="mx-2">•</span>
               <Link
                 href="/legal/privacy"
-                className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors duration-200"
+                className="text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors"
               >
                 Privacy Policy
               </Link>
